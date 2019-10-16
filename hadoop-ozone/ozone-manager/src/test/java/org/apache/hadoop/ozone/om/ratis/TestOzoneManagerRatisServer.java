@@ -32,7 +32,7 @@ import org.apache.hadoop.ozone.OmUtils;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
-import org.apache.hadoop.ozone.om.OMNodeDetails;
+import org.apache.hadoop.ozone.om.ha.OMNodeDetails;
 import org.apache.hadoop.ozone.om.OmMetadataManagerImpl;
 import org.apache.hadoop.ozone.om.OzoneManager;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
@@ -205,6 +205,7 @@ public class TestOzoneManagerRatisServer {
         .setOMServiceId(customOmServiceId)
         .build();
     // Starts a single node Ratis server
+    omRatisServer.stop();
     OzoneManagerRatisServer newOmRatisServer = OzoneManagerRatisServer
         .newOMRatisServer(newConf, ozoneManager, nodeDetails,
             Collections.emptyList());
@@ -219,6 +220,7 @@ public class TestOzoneManagerRatisServer {
     RaftGroupId raftGroupId = newOmRatisServer.getRaftGroup().getGroupId();
     Assert.assertEquals(uuid, raftGroupId.getUuid());
     Assert.assertEquals(raftGroupId.toByteString().size(), 16);
+    newOmRatisServer.stop();
   }
 
 
